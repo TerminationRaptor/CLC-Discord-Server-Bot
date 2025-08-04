@@ -1,7 +1,7 @@
 {{ $args := parseArgs 2 "" (carg "member" "target member") (carg "string" "award name") }}
 
 {{ $member := $args.Get 0 }}
-{{ $id := ($args.Get 0).User.Id }}
+{{ $id := ($args.Get 0).User.ID }}
 {{ $award := $args.Get 1 }}
 {{ $awardList := cslice }}
 
