@@ -4,13 +4,13 @@
 {{ $id := ($args.Get 0).User.ID }}
 {{ $award := $args.Get 1 }}
 {{ $awardList := sdict }}
-{{ $key := 0}}
+{{ $key := 0 }}
 
-{{ while $awardList.hasKey $key true }}
+{{ while $awardList.HasKey (toString $key) }}
 	{{ $key = add $key 1 }}
-    {{ $awardList.hasKey $key }}
+    {{ $awardList.HasKey (toString $key) }}
 {{ end }}
 
-{{ $awardList.Set $key $award }}
+{{ $awardList.Set (toString $key) $award }}
 {{ dbGet $id "awardList" }}
 {{ dbSet $id "awardList" $awardList }}
