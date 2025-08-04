@@ -3,8 +3,14 @@
 {{ $member := $args.Get 0 }}
 {{ $id := ($args.Get 0).User.ID }}
 {{ $award := $args.Get 1 }}
-{{ $awardList := cslice }}
+{{ $awardList := sdict }}
+{{ $key := 0}}
 
-{{ $awardList.AppendSlice $award }}
+{{ while $awardList.hasKey $key true }}
+	{{ $key = add $key 1 }}
+    {{ $awardList.hasKey $key }}
+{{ end }}
+
+{{ $awardList.Set $key $award }}
 {{ dbGet $id "awardList" }}
 {{ dbSet $id "awardList" $awardList }}
