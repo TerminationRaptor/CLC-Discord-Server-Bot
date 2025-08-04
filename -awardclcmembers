@@ -1,23 +1,23 @@
-{{ $args := parseArgs 2 "" (carg "member" "target member") (carg "string" "award name") }}
+{{/* Demand certain arguments related to member affected, award affected, and action taken. */}}
+{{ $args := parseArgs 3 "" (carg "member" "target member") (carg "string" "award name") (carg "string" "action") }}
 
+{{/* Define argument variables. */}}
 {{ $member := $args.Get 0 }}
 {{ $id := ($args.Get 0).User.ID }}
 {{ $award := $args.Get 1 }}
+{{ $action := $args.Get 2 }}
+{{ try }}
+	{{ dbGet $id "awardList" }}
+{{ catch }}
+	{{ .Error }}
+{{ end }}
+
+{{ if $action "award" }}
+	
+{{ else if $action "retract" }}
+	
+{{ end }}
 
 {{ $awardList := sdict }}
-{{ $awardList.Del "0" }}
-
-editAwardProfile: {{ dbSet $id "awardList" $awardList }}
-addAward: {{ (dbGet $id "awardList")|(dbSet $id "awardList" $awardList) }}
-
-{{ $check := 0 }}
-{{ $positionValue := ( $awardList.Get ( toString $check ) ).Value }}
-{{ if ($awardList.Get).Value nil }}
-	editAwardProfile
-{{ end }}
-{{ if not ($awardList.Get).Value nil }}
-	{{ while not ( $positionValue.Value nil ) }}
-		{{ $check = add $check 1 }}
-	{{ end }}
-	addAward
-{{ end }}
+{{ $awardList.Set "0" $award }}
+{{ dbSet $id "awardList" $awardList }}
